@@ -1,12 +1,7 @@
 from shiny.express import ui, render, input
-from pathlib import Path
-import pandas as pd
 from shinywidgets import render_plotly
 import plotly.express as px
-
-file_path = Path(__file__).parent / "penguins.csv"
-df = pd.read_csv(file_path)
-print(df)
+from data_import import df
 
 
 with ui.sidebar(bg="#f8f8f8"):
