@@ -36,22 +36,50 @@ ui.p("Text")
 
 
 with ui.layout_columns():
-    with ui.card():
+    with ui.value_box(
+        theme="blue",
+    ):
+        "Mean Beak Length"
 
-        @render_plotly
-        def plot():
-            df_subset = filter_data()
+        @render.text
+        def mean_beak_length():
+            return filter_data()["bill_length_mm"].mean().round(1)
 
-            if input.show_species():
-                return px.scatter(
-                    df_subset, x="bill_depth_mm", y="bill_length_mm", color="species"
-                )
-            return px.scatter(df_subset, x="bill_depth_mm", y="bill_length_mm")
+    with ui.value_box(
+        theme="blue",
+    ):
+        "Mean Beak Depth"
 
-        ui.input_checkbox("show_species", "Show Species", value=True)
+        @render.text
+        def mean_beak_depth():
+            return filter_data()["bill_depth_mm"].mean().round(1)
 
-    with ui.card():
+    with ui.value_box(
+        theme="blue",
+    ):
+        "Number of Penguins"
 
-        @render.data_frame
-        def data():
-            return filter_data()
+        @render.text
+        def n_penguins():
+            return len(filter_data())
+
+
+with ui.card():
+
+    @render_plotly
+    def plot():
+        df_subset = filter_data()
+
+        if input.show_species():
+            return px.scatter(
+                df_subset, x="bill_depth_mm", y="bill_length_mm", color="species"
+            )
+        return px.scatter(df_subset, x="bill_depth_mm", y="bill_length_mm")
+
+    ui.input_checkbox("show_species", "Show Species", value=True)
+
+with ui.card():
+
+    @render.data_frame
+    def data():
+        return filter_data()
